@@ -1,0 +1,140 @@
+<html>
+  <style>
+    :root {
+      font-family: 'Arial', sans-serif;
+    }
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    p {
+      padding: .125rem 0;
+    }
+    .docTitle {
+      background-color: #333333;
+      color: #EEE;
+      margin-bottom: 0.5rem;
+      font-size: 1.5em;
+      padding: 0.5rem;
+    }
+    .resumen {
+      padding-left: .5rem;
+    }
+    .clase {
+      background-color: #373;
+      font-size: 1.25rem;
+      padding: 0.5em;
+      margin-bottom: 0.5rem;
+      margin-top: 2em;
+    }
+    .campos {
+      margin-left: 0.5em;
+    }
+    .tipoCampo {
+      text-decoration: underline;
+      font-weight: bold;
+    }
+    .type {
+      font-weight: bold;
+    }
+    .name {
+      font-style: italic;
+    }
+    .container {
+      margin-left: 1em;
+    }
+    .desc {
+      padding-left: 1em;
+    }
+    .lista {
+      margin-left: 2em;
+    }
+  </style>
+  <head>
+    <title>Documentación Calculadora</title>
+  </head>
+  <body>
+    <h1 class="docTitle">Documentación Calculadora</h1>
+    <h2 class="resumen">Resumen de Contenido:</h2>
+    <ul class="lista">
+      <li><a href="#token">Class Token</a></li>
+      <li><a href="#nodo">Class Nodo</a></li>
+      <li><a href="#lista">Class Lista</a></li>
+    </ul>
+    <A id="token"></A>
+    <h2 class="clase">Class: Token</h2>
+    <p class="desc">Representa un valor, puede ser un número entero o un caracter.</p>
+    <section class="campos">
+      <h1>Campos</h1>
+      <p class="tipoCampo">Protected</p>
+      <div class="container">
+          <p><span class="type">int</span> <span class="name">numero</span></p>
+          <p class="desc">Representa el valor numérico del token (en el caso que almacene uno)</p>
+          <p><span class="type">char</span> <span class="name">caracter</span></p>
+          <p class="desc">Valor de caracter (en el caso que almacene un char)</p>
+          <p><span class="type">string</span> <span class="name">type</span></p>
+          <p class="desc">Representa el tipo de valor almacenado. Valores posibles "number" o "char".</p>
+      </div>
+      <p class="tipoCampo">Public</p>
+      <div class="container">
+        <p><span class="type">Constructor</span> <span class="name"></span></p>
+        <p><span class="name">Token(int n)</span></p>
+        <p class="desc">Crea un token asignando el campo numero con el valor recibido. Establece el campo type en "number".</p>
+        <p><span class="name">Token(char c)</span></p>
+        <p class="desc">Crea un token asignando el campo caracter con el valor recibido. Establece el campo type en "char".</p>
+        <p><span class="type">string</span> <span class="name">getType()</span></p>
+        <p class="desc">Retorna la cadena contenida</p>
+        <p><span class="type">int</span> <span class="name">getNumero</span></p>
+        <p class="desc">Retorna el entero asignado al token.</p>
+        <p><span class="type">char</span> <span class="name">getChar</span></p>
+        <p class="desc">Retorna el caracter asignado al token.</p>
+      </div>
+    </section>
+
+    <A id="nodo"></A>
+    <h2 class="clase">Class: Nodo</h2>
+    <p class="desc">Representa un elemento que forma parte de una lista.</p>
+    <section class="campos">
+      <h1>Campos</h1>
+      <p class="tipoCampo">Protected</p>
+      <div class="container">
+        <p><span class="type">Token *</span><span class="name">dato</span></p>
+        <p class="desc">Almacena el token.</p>
+        <p><span class="type">Nodo *</span><span class="name">next</span></p>
+        <p class="desc">Representa el enlace con otro nodo.</p>
+      </div>
+      <p class="tipoCampo">Public</p>
+      <div class="container">
+        <p><span class="name">Nodo()</span></p>
+        <p class="desc">Crea un nodo de finalización, sin dato y sin enlace.</p>
+        <p><span class="name">Nodo(Token *a)</span></p>
+        <p class="desc">Crea un nodo asignandole como dato el parametro recibido 'a'.</p>
+        <p><span class="type">void</span> <span class="name">set_dato(Token *a)</span></p>
+        <p class="desc">Establece como dato el token recibido.</p>
+        <p><span class="type">void</span> <span class="name">set_next(Nodo *n)</span></p>
+        <p class="desc">Establece como nodo siguiente el nodo recibido.</p>
+        <p><span class="type">Token *</span><span class="name">get_dato()</span></p>
+        <p class="desc">Retorna la referencia al token asignado como dato.</p>
+        <p><span class="type">Nodo *</span><span class="name">get_next()</span></p>
+        <p class="desc">Retorna la referencia al nodo establecido como siguiente.</p>
+        <p><span class="type">bool</span> <span class="name">es_vacio()</span></p>
+        <p class="desc">Retorna true si el nodo siguiente es nulo y false si no lo es.</p>
+      </div>
+    </section>
+    
+    <A id="lista"></A>
+    <h2 class="clase">Class: Lista</h2>
+    <p class="desc">Representa una lista de nodos</p>
+    <p class="tipoCampo">Protected</p>
+    <div class="container">
+      <p><span class="type">Nodo *</span><span class="name">czo</span></p>
+      <p class="desc">Representa el comienzo de la lista.</p>
+    </div>
+    <p class="tipoCampo">Public</p>
+    <div class="container">
+      <p><span class="name">Lista()</span></p>
+      <p class="desc">Crea una nueva lista vacía.</p>
+    </div>
+    
+  </body>
+</html>
