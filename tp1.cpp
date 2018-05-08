@@ -51,44 +51,44 @@ class Nodo{
 };
 
 class Lista{
-    protected: Nodo *czo;
-    public:
-            Lista(){czo=new Nodo();};
-            Lista(Nodo *n) {czo=n;};
-            //~Lista(void);
-            //tipolista Lista::ultimo(tipolista x);
-            void del(void);
-            void add(Token *d);
-            bool esvacia(void);
-            Token *cabeza(void);
-            Lista *resto(void);
-            string toPrint(string p);   
-            
+	protected: 
+		Nodo *czo;
+	public:
+		Lista(){czo=new Nodo();};
+		Lista(Nodo *n) {czo=n;};
+		//~Lista(void);
+		//tipolista Lista::ultimo(tipolista x);
+		void del(void);
+		void add(Token *d);
+		bool esvacia(void);
+		Token *cabeza(void);
+		Lista *resto(void);
+		string toPrint(string p);    
 };
 
 class Pila:public Lista{
-      public:
-             Pila(){Lista();};
-             void apilar(Token *x){add(x);};
-             Token *tope(void){return cabeza();};
-             void desapilar(void){del();};
-             bool pilavacia(){return esvacia();};
+	public:
+		Pila(){Lista();};
+		void apilar(Token *x){add(x);};
+		Token *tope(void){return cabeza();};
+		void desapilar(void){del();};
+		bool pilavacia(){return esvacia();};
 };                  
 
 
 void Lista::del(void){ 
-     Nodo *aux;
-     aux=czo;
-     czo=czo->get_next();
-     delete aux;
+	Nodo *aux;
+	aux=czo;
+	czo=czo->get_next();
+	delete aux;
 }
 void Lista::add(Token *d){  
-     Nodo *nuevo=new Nodo(d);
-     nuevo->set_next(czo);
-     czo=nuevo;
+	Nodo *nuevo=new Nodo(d);
+	nuevo->set_next(czo);
+	czo=nuevo;
 }
 bool Lista::esvacia(void){   
-    return czo->es_vacio();
+	return czo->es_vacio();
 }
 
 Token *Lista::cabeza(void){ 
@@ -105,31 +105,28 @@ Lista *Lista::resto(void){
 }
 
 string Lista::toPrint(string p){
-     if (this->esvacia()) {
-        return p;
-     } else {
-       std::ostringstream stm;
-       if(this->cabeza()->getType() == "number")
-         stm << this->cabeza()->getNumero() << "-" << this->resto()->toPrint(p) << endl;
-       else
-         stm << this->cabeza()->getChar() << "-" << this->resto()->toPrint(p) << endl;
-       return stm.str();
-     }
+	if (this->esvacia()) {
+		return p;
+	} else {
+		std::ostringstream stm;
+		if(this->cabeza()->getType() == "number")
+			stm << this->cabeza()->getNumero() << "-" << this->resto()->toPrint(p) << endl;
+		else
+			stm << this->cabeza()->getChar() << "-" << this->resto()->toPrint(p) << endl;
+		return stm.str();
+	}
 }
 
 ///////////////// CALCULADORA ///////////////////////
 
-//-- DEBERIAMOS RESOLVER EL PROBLEMA DE NUMERO DE 2 DIGITOS
 class Calculadora{
 	protected:
 		Pila *pilaOriginal;
 		/**
-		*
 		* Funcion encargada de procesar el entero recibido para operar con la pila
 		*
 		*/
 		void operar(Pila *p, int a){
-			//cout << "\n\n ---- OPERAR ----- \n\n";
 			int x;
 			if(p->pilavacia()){
 				x = a;
@@ -140,7 +137,6 @@ class Calculadora{
 			}else{
 				// si tiene un signo en el tope (lo que necesariamente no significa que haya otro numero antes que el signo)
 				// hay que ver si hay otro numero para hacer las operaciones, si no hay otro numero es porque es un signo menos
-				// en el caso que no sean tan hijos de puta.
 				Token *tok = p->tope(); //guardo el signo que hay en la pila
 				p->desapilar(); //en este momento el p->tope() deberia tener un numero para operar
 				if(p->pilavacia()){
@@ -189,7 +185,7 @@ class Calculadora{
 			}
 			//---------- EO VALORE TOKEN
 	  	cout << "\nPilaOriginal Actual:" << pilaOriginal->toPrint("");
-	  	cout << "\nPila P en tránsito: " << p->toPrint("");
+	  	cout << "\nPila P en trï¿½nsito: " << p->toPrint("");
 	  	*/
 			if(val.getType() == "number"){
 				operar(p,val.getNumero());
@@ -217,7 +213,6 @@ class Calculadora{
 					return -n;
 				}*/
 				return p->tope()->getNumero();
-				
 			}
 			if(! pilaOriginal->pilavacia() ){
 			  calcular(p);
@@ -226,21 +221,18 @@ class Calculadora{
       }
       return p->tope()->getNumero();
 		}
-	bool isnum(char valor) //comprobacion numeror
-	{
-		if(!isalpha(valor))
-			if(isalnum(valor))
-				return true;
-				
-		return false;
+	bool isnum(char valor){
+	//comprobacion numero
+	bool isNum = false;
+		if(!isalpha(valor) && isalnum(valor))
+			isNum = true;
+		return isNum;
 	}
-	bool analizar(string cad)
-	{
+	bool analizar(string cad){
 		// Analizar parentesis (cantidad y cerrado)
 		bool correcto= true;
 		Pila *parentesis = new Pila();
-		for(int i = 0 ; i < cad.length() ; i++)
-		{
+		for(int i = 0 ; i < cad.length() ; i++){
 			if(cad.at(i)=='(')
 				parentesis->apilar(new Token('('));
 			else if(cad.at(i)==')')
@@ -248,7 +240,6 @@ class Calculadora{
 					correcto = false;
 				else
 					parentesis->desapilar();
-			
 		}
 		if(!parentesis->pilavacia())
 			correcto = false;
