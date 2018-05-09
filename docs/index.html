@@ -7,6 +7,11 @@
       padding: 0;
       margin: 0;
     }
+    body {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     p {
       padding: .125rem 0;
     }
@@ -52,6 +57,7 @@
   </style>
   <head>
     <title>Documentación Calculadora</title>
+    <meta charset="UTF-8">
   </head>
   <body>
     <h1 class="docTitle">Documentación Calculadora</h1>
@@ -60,6 +66,8 @@
       <li><a href="#token">Class Token</a></li>
       <li><a href="#nodo">Class Nodo</a></li>
       <li><a href="#lista">Class Lista</a></li>
+      <li><a href="#pila">Class Pila</a></li>
+      <li><a href="#calculadora">Class Calculadora</a></li>
     </ul>
     <A id="token"></A>
     <h2 class="clase">Class: Token</h2>
@@ -125,16 +133,59 @@
     <A id="lista"></A>
     <h2 class="clase">Class: Lista</h2>
     <p class="desc">Representa una lista de nodos</p>
-    <p class="tipoCampo">Protected</p>
-    <div class="container">
-      <p><span class="type">Nodo *</span><span class="name">czo</span></p>
-      <p class="desc">Representa el comienzo de la lista.</p>
-    </div>
-    <p class="tipoCampo">Public</p>
-    <div class="container">
-      <p><span class="name">Lista()</span></p>
-      <p class="desc">Crea una nueva lista vacía.</p>
-    </div>
+    <section class="campos">
+      <p class="tipoCampo">Protected</p>
+      <div class="container">
+        <p><span class="type">Nodo *</span><span class="name">czo</span></p>
+        <p class="desc">Representa el comienzo de la lista.</p>
+      </div>
+      <p class="tipoCampo">Public</p>
+      <div class="container">
+        <p><span class="name">Lista()</span></p>
+        <p class="desc">Crea una nueva lista vacía.</p>
+        <p><span class="name">Lista(Nodo *n)</span></p>
+        <p class="desc">Crea una lista con el nodo recibido como comienzo.</p>
+        <p><span class="type">void</span> <span class="name">del()</span></p>
+        <p class="desc">Elimina el último nodo agregado a la lista.</p>
+        <p><span class="type">void</span> <span class="name">add(Token *d)</span></p>
+        <p class="desc">Agrega u nuevo nodo con el token recibido.</p>
+        <p><span class="type">bool</span> <span class="name">esvacia()</span></p>
+        <p class="desc">Retorna true si la lista está vacía.</p>
+        <p><span class="type">Token *</span><span class="name">cabeza()</span></p>
+        <p class="desc">Retorna la cabeza de la lista (último nodo añadido).</p>
+        <p><span class="type">Lista *</span><span class="name">resto()</span></p>
+        <p class="desc">Retorna la lista sin la cabeza.</p>
+        <p><span class="type">string</span> <span class="name">toPrint()</span></p>
+        <p class="desc">Retorna un string con los valores de la lista.</p>
+      </div>
+    </section>
+
+    <A id="pila"></A>
+    <h2 class="clase">Class: Pila extends Lista</h2>
+    <p class="desc">Representa una pila.</p>
+    <section class="campos">
+      <p class="tipoCampo">Public</p>
+      <div class="container">
+        <p><span class="name">Pila()</span></p>
+        <p class="desc">Construye una nueva pila.</p>
+        <p><span class="type">Token *</span><span class="name">tope()</span></p>
+        <p class="desc">Retorna el valor en el tope de la lista.</p>
+        <p><span class="type">void</span> <span class="name">apilar(Token *x)</span></p>
+        <p class="desc">Apila un token en la lista.</p>
+        <p><span class="type">void</span> <span class="name">desapilar()</span></p>
+        <p class="desc">Desapila el elemento en el tope de la lista.</p>
+        <p><span class="type">bool</span> <span class="name">pilavacia()</span></p>
+        <p class="desc">Retorna true si la pila no contiene elementos.</p>
+      </div>
+    </section>
+
+    <A id="Calculadora"></A>
+    <h2 class="clase">Class: Calculadora</h2>
+    <p class="desc">Clase encargada de resolver una cadena de texto con operaciones matemáticas básicas.</p>
+    <section class="campos">
+
+    </section>
+
     
   </body>
 </html>
