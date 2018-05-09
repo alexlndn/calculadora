@@ -206,7 +206,7 @@ bool Calculadora::logica(string cad){
 				correcto = false;
 			else
 				valor = "signo";
-		else if(cad.at(i)=='-' || cad.at(i)=='+')
+		else if(cad.at(i)=='-')
 			if(valor!= "num" && valor!= ")" && valor!= "(")
 				correcto = false;
 			else
