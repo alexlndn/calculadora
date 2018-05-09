@@ -133,9 +133,9 @@ class Calculadora{
 };
 
 /**
-  * Determina si el caracter recibido es un número
+  * Determina si el caracter recibido es un nï¿½mero
   * @param valor El caracter a analizar
-  * @return true si el valor es un número
+  * @return true si el valor es un nï¿½mero
   */
 
 bool Calculadora::isnum(char valor){ //Comprueba si el char enviado es un numero o no, utilizando los metodos de "cctype".
@@ -159,43 +159,40 @@ Pila* Calculadora::invertirPila(Pila *original){
 	return p;
 }
 
-bool Calculadora::parentesis(string cad) // Analiza parentesis: tanto su cantidad como el orden.
-{	
+bool Calculadora::parentesis(string cad){
+	 // Analiza parentesis: tanto su cantidad como el orden.
 	bool correcto= true;
 	Pila *parentesis = new Pila(); //Crea una pila donde se ira almacenando los parentesis abiertos.
-	for(int i = 0 ; i < cad.length() && correcto ; i++)	//inicia un ciclo iterativo a lo largo de toda la cadena detectando unicamente cuando el valor es un parentesis abierto o cerrado. Tiene de bandera a "correcto".
-	{
-		if(cad.at(i)=='(')						//Si es un parentesis abierto lo almacena de forma de Token-char en la pila.
+	for(int i = 0 ; i < cad.length() && correcto ; i++){
+		//inicia un ciclo iterativo a lo largo de toda la cadena detectando unicamente cuando el valor es un parentesis abierto o cerrado. Tiene de bandera a "correcto".
+		if(cad.at(i)=='(')				//Si es un parentesis abierto lo almacena de forma de Token-char en la pila.
 			parentesis->apilar(new Token('('));
-		else if(cad.at(i)==')')					//Si es un parentesis cerrado comprueba si la pila esta vacia. Si es el caso entonces "correcto" igual false ya que no habia un parentesis abierto antes.
+		else if(cad.at(i)==')')			//Si es un parentesis cerrado comprueba si la pila esta vacia. Si es el caso entonces "correcto" igual false ya que no habia un parentesis abierto antes.
 			if(parentesis->pilavacia())
 				correcto = false;
 			else
-				parentesis->desapilar();	// Si la pila no es vacia entonces desapila.
-		
+				parentesis->desapilar();// Si la pila no es vacia entonces desapila.
 	}
 	if(!parentesis->pilavacia())		//Si la pila no es vacia significa que quedo un parentesis sin cerrar y por ende la expresion estaba mal y retorna false.
 		correcto = false;
-		
 	return correcto;					//Si la pila es vacia retorna la variable "correcto" que sera false o true dependiendo de que sucedio en el ciclo for.
 }
 
 
-bool Calculadora::logica(string cad) //Analiza orden de simbolos, numeros y parentesis ( que la logica sea correcta para utilizarlo en calculadora).
-{
+bool Calculadora::logica(string cad){
+	//Analiza orden de simbolos, numeros y parentesis ( que la logica sea correcta para utilizarlo en calculadora).
 	bool correcto = true;
 	string valor;
 	if(isnum(cad.at(0))) //Envia a isnum() para comprobar si es numero el primer valor.
 		valor = "num";
-	else if(cad.at(0)=='(') //Caso contrario comprueba si el primer valor es parentesis abierto.
+	else if(cad.at(0)=='(' && cad.length() > 2) //Caso contrario comprueba si el primer valor es parentesis abierto.
 			valor = "(";
 		else{						//Si el primer valor no es parentesis abierto ni numero entonces la exprecion esta mal y cambia el valor de "correcto" a false y lo retorna.
 			correcto = false;	
 			return correcto;	 
 		}
-		
-	for(int i = 1 ; i < (cad.length() -1) && correcto ; i++) //Comprueba los demas valores (desde el segundo hasta el anteultimo). Si detecta un error, cambia el valor de la variable "correcto" a "false" y no vuelve a entrar al ciclo.
-	{
+	//Comprueba los demas valores (desde el segundo hasta el anteultimo). Si detecta un error, cambia el valor de la variable "correcto" a "false" y no vuelve a entrar al ciclo.
+	for(int i = 1 ; i < (cad.length() -1) && correcto ; i++){
 		if(cad.at(i)=='(')
 			if(valor != "signo" && valor != "(")
 				correcto = false;
@@ -272,7 +269,6 @@ bool Calculadora::analizar(string cad){
 }
 
 int Calculadora::calcular(Pila *p){
-		
 	Token val= *pilaOriginal->tope();
 	if(val.getType() == "number"){
 		operar(p,val.getNumero());
@@ -295,11 +291,7 @@ int Calculadora::calcular(Pila *p){
   	}else{
 		return p->tope()->getNumero();
   	}
-  	return p->tope()->getNumero();
-	  	
-
-  	
-	  
+  	return p->tope()->getNumero(); 
 }
 
 void Calculadora::tryCalcular(Pila *p){
