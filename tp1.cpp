@@ -294,10 +294,10 @@ int Calculadora::calcular(Pila *p){
 
 void Calculadora::tryCalcular(Pila *p){
 	if(ok!=0){
-		cout << "Resultado: " << calcular(p);	
+		cout << "Resultado: " << calcular(p) << endl << endl;	
 	}
 	else{
-		cout << "Error en la cadena";
+		cout << "Error en la cadena.\n\n";
 	}
 }
 
@@ -342,5 +342,6 @@ int main(){
   cin >> cad;
   Calculadora *c = new Calculadora(cad);
   c->tryCalcular(new Pila());
+  system("PAUSE");
 };
 
