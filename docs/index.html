@@ -8,8 +8,9 @@
       margin: 0;
       box-sizing: border-box;
     }
-    body {
-
+    ul li a {
+      text-decoration: none;
+      color: #212121;
     }
     .globalContainer {
       border: 1px solid rgba(33,33,33,.5);
@@ -32,11 +33,11 @@
       padding-left: .5rem;
     }
     .clase {
-      background-color: #373;
+      background-color: rgb(47, 161, 47);
       font-size: 1.25rem;
       padding: 0.5em;
       margin-bottom: 0.5rem;
-      margin-top: 2em;
+      margin-top: 1rem;
     }
     .campos {
       margin-left: 0.5em;
@@ -190,7 +191,34 @@
       <h2 class="clase">Class: Calculadora</h2>
       <p class="desc">Clase encargada de resolver una cadena de texto con operaciones matemáticas básicas.</p>
       <section class="campos">
-
+        <p class="tipoCampo">Protected</p>
+        <div class="container">
+          <p><span class="type">bool</span> <span class="name"></span>ok</p>
+          <p class="desc">Contiene un booleano que indica si la cadena ingresada es correcta o no.</p>
+          <p><span class="type">Pila *</span><span class="name">pilaOriginal</span></p>
+          <p class="desc">Referencia a la Pila donde se almacenan los valores de la cadena a resolver.</p>
+          <p><span class="type">bool</span> <span class="name">isnum(char valor)</span></p>
+          <p class="desc">Retorna true si el caracter recibido es un número y false si no lo es.</p>
+          <p><span class="type">bool</span> <span class="name">parentesis(string cad)</span></p>
+          <p class="desc">Retorna true si los parentesis de la expresión recibida son correctos y false si hay algún problema.</p>
+          <p><span class="type">bool</span> <span class="name">logica(string cad)</span></p>
+          <p class="desc">Retorna true si la expresion tiene sentido en términos de orden de caracteres o si no lo es.</p>
+          <p><span class="type">bool</span> <span class="name">analizar(string cad)</span></p>
+          <p class="desc">Retorna true si la cadena es correcta y se puede procesar dentro de una Pila, si no es correcta devuelve false.</p>
+          <p><span class="type">Pila *</span><span class="name">invertirPila(Pila *original)</span></p>
+          <p class="desc">Retorna una Pila que es la inversa de la Pila recibida.</p>
+          <p><span class="type">void</span> <span class="name">operar(Pila *p, int a)</span></p>
+          <p class="desc">Procesa el entero recibido en la Pila recibida.</p>
+          <p><span class="type">int</span> <span class="name">calcular(Pila *p)</span></p>
+          <p class="desc">Procesa y resuelve operando sobre la pila recibida.</p>
+        </div>
+        <p class="tipoCampo">Public</p>
+        <div class="container">
+          <p><span class="name">Calculadora(string cad)</span></p>
+          <p class="desc">Crea una calculadora y analiza la cadena recibida.</p>
+          <p><span class="type">void</span> <span class="name">tryCalcular(Pila *p)</span></p>
+          <p class="desc">Si la cadena ingresada está en condiciones de ser operada, realiza las operaciones y devuelve el resultado. Caso contrario imprime un mensaje de error.</p>
+        </div>
       </section>
     </div>
 
