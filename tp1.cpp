@@ -313,6 +313,8 @@ void Calculadora::operar(Pila *p, int a){
 		if(p->pilavacia()){
 		 if(tok->getChar() == '-')
 			x = -a;
+		 else
+			x = a;
 		}else{
 			switch( tok->getChar()){
 			case '+':
