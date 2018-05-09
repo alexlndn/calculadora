@@ -1,4 +1,4 @@
-//#include <cstdlib>
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <cctype>
@@ -117,14 +117,19 @@ string Lista::toPrint(string p){
 
 class Calculadora{
 	protected:
+		bool ok;
 		Pila *pilaOriginal;
 		bool isnum(char valor);
+		bool parentesis(string cad);
+		bool logica(string cad);
 		bool analizar(string cad);
+		Pila* invertirPila(Pila *original);
 		void operar(Pila *p, int a);
 		
 	public:
-		Calculadora(Pila *pila){ pilaOriginal = pila; };
+		Calculadora(string cad){ ok = analizar(cad); };
 		int calcular(Pila *p);
+		void tryCalcular(Pila *p);
 };
 
 /**
@@ -132,58 +137,142 @@ class Calculadora{
   * @param valor El caracter a analizar
   * @return true si el valor es un número
   */
-bool Calculadora::isnum(char valor){
-	bool isNum = false;
-	if(!isalpha(valor) && isalnum(valor))
-		isNum = true;
-	return isNum;
+
+bool Calculadora::isnum(char valor){ //Comprueba si el char enviado es un numero o no, utilizando los metodos de "cctype".
+		if(!isalpha(valor)) //Comprueba si no es una letra.
+			if(isalnum(valor)) //Si no es una letra, comprueba si es alfanumerico.
+				return true;	//Si no es una letra y es alfanumerico, entonces es un numero y retorna true.
+				
+		return false; //Caso contrario retorna false.
+};
+
+
+Pila* Calculadora::invertirPila(Pila *original){
+	Pila *p = new Pila();
+	bool seguir = true;
+	while(seguir){
+		p->apilar(original->tope());
+		original->desapilar();
+		if(original->pilavacia())
+			seguir = false;
+	}
+	return p;
 }
 
-bool Calculadora::analizar(string cad){
-	// Analizar parentesis (cantidad y cerrado)
+bool Calculadora::parentesis(string cad) // Analiza parentesis: tanto su cantidad como el orden.
+{	
 	bool correcto= true;
-	Pila *parentesis = new Pila();
-	for(int i = 0 ; i < cad.length() ; i++){
-		if(cad.at(i)=='(')
+	Pila *parentesis = new Pila(); //Crea una pila donde se ira almacenando los parentesis abiertos.
+	for(int i = 0 ; i < cad.length() && correcto ; i++)	//inicia un ciclo iterativo a lo largo de toda la cadena detectando unicamente cuando el valor es un parentesis abierto o cerrado. Tiene de bandera a "correcto".
+	{
+		if(cad.at(i)=='(')						//Si es un parentesis abierto lo almacena de forma de Token-char en la pila.
 			parentesis->apilar(new Token('('));
-		else if(cad.at(i)==')')
+		else if(cad.at(i)==')')					//Si es un parentesis cerrado comprueba si la pila esta vacia. Si es el caso entonces "correcto" igual false ya que no habia un parentesis abierto antes.
 			if(parentesis->pilavacia())
 				correcto = false;
 			else
-				parentesis->desapilar();
+				parentesis->desapilar();	// Si la pila no es vacia entonces desapila.
+		
 	}
-	if(!parentesis->pilavacia())
+	if(!parentesis->pilavacia())		//Si la pila no es vacia significa que quedo un parentesis sin cerrar y por ende la expresion estaba mal y retorna false.
 		correcto = false;
-	
 		
-		
-	//analizador de imperfecciones
-	bool correcto1 = true;
-	string valor = "inicio";
-	if((!isnum(cad.at(0))
+	return correcto;					//Si la pila es vacia retorna la variable "correcto" que sera false o true dependiendo de que sucedio en el ciclo for.
+}
+
+
+bool Calculadora::logica(string cad) //Analiza orden de simbolos, numeros y parentesis ( que la logica sea correcta para utilizarlo en calculadora).
+{
+	bool correcto = true;
+	string valor;
+	if(isnum(cad.at(0))) //Envia a isnum() para comprobar si es numero el primer valor.
 		valor = "num";
-	else if(cad.at(0)=='(')
+	else if(cad.at(0)=='(') //Caso contrario comprueba si el primer valor es parentesis abierto.
 			valor = "(";
-		else 
-			correcto1 = false;
-	
-	for(int i = 1 ; i < cad.length() ; i++)
+		else{						//Si el primer valor no es parentesis abierto ni numero entonces la exprecion esta mal y cambia el valor de "correcto" a false y lo retorna.
+			correcto = false;	
+			return correcto;	 
+		}
+		
+	for(int i = 1 ; i < (cad.length() -1) && correcto ; i++) //Comprueba los demas valores (desde el segundo hasta el anteultimo). Si detecta un error, cambia el valor de la variable "correcto" a "false" y no vuelve a entrar al ciclo.
 	{
 		if(cad.at(i)=='(')
 			if(valor != "signo" && valor != "(")
-				correcto1 = false;
+				correcto = false;
 				else
 					valor = "(";
 		else if(cad.at(i)==')')
 				if(valor != "num" && valor != ")")
-					correcto1 = false;
+					correcto = false;
 					else
 						valor = ")";
-			else if(cad.at(i)=='+' || cad.at(i)=='-' || cad.at(i)=='*' || cad.at(i)=='/')
+				else if(cad.at(i)=='*' || cad.at(i)=='/')
+						if(valor!= "num" && valor!= ")")
+							correcto = false;
+							else
+								valor = "signo";
+					else if(cad.at(i)=='-' || cad.at(i)=='+')
+							if(valor!= "num" && valor!= ")" && valor!= "(")
+								correcto = false;
+								else
+									valor = "signo";
+							else if(isnum(cad.at(i)))
+								if(valor == ")")
+									correcto = false;
+									else
+										valor = "num";
+								else correcto = false;
 	}
+	
+	if(isnum(cad.at(cad.length() -1))) //Envia a isnum() para comprobar si es numero el ultimo valor. Si es verdadero retorna "correcto", que sera false o true dependiendo de que sucedio en el ciclo for.
+		return correcto;	
+	else if(cad.at(cad.length() -1) ==')') //Caso contrario comprueba si el ultimo valor es parentesis cerrado. Si es verdadero retorna "correcto", que sera false o true dependiendo de que sucedio en el ciclo for.
+			return correcto;
+	
+	correcto = false;						//Si ultimo el valor no es numero ni parentesis cerrado, entonces esta mal y cambia el valor de "correcto" a false y lo retorna.
+	return correcto;						
+}
+
+
+bool Calculadora::analizar(string cad){
+	Pila *p = new Pila();						//Crea una pila donde se guardaran los valores.
+	int num;									//Crea una variable int donde se procesara el char para apilarlo como entero.
+	int temp;									//Crea una variable int donde guardara el ultimo.
+	bool cond;
+	
+	if(logica(cad) && parentesis(cad)){         //Comprueba que la cadena ingresada sea utilizable
+	
+		for(int i = 0 ; i < cad.length() ; i++){
+			if(isnum(cad.at(i)))
+				if(p->pilavacia()){				//Si es un numero y la pila es vacia, entonces lo agrega directo, haciendo la conversion de char a int (char de interes - char '0').
+					num = cad.at(i) -'0';
+					p->apilar(new Token(num));
+				}
+				else if(p->tope()->getType()=="number"){	//Si es un numero y el tope de la pila es tambien numero entonces lo desapila y lo convierte en un unico numero (anterior*10 + nuevo) y lo guarda, siempre haciendo la convercion de char a int.
+					temp = p->tope()->getNumero();
+					p->desapilar();
+					num = cad.at(i) -'0';
+					num = temp*10 + num;
+					p->apilar(new Token(num));
+				}
+					else{									//Si es un numero y el anterior no es un numero, entonces lo agrega directo, haciendo la conversion de char a int (char de interes - char '0').
+						num = cad.at(i) -'0';
+						p->apilar(new Token(num));
+					}
+			else											//Si no es un numero lo apila directamente en un Token char.
+				p->apilar(new Token(cad.at(i)));
+		}
+		pilaOriginal = invertirPila(p);	
+		cond = true;
+	}
+	else{
+		cond = false;
+	}
+	return cond;
 }
 
 int Calculadora::calcular(Pila *p){
+		
 	Token val= *pilaOriginal->tope();
 	if(val.getType() == "number"){
 		operar(p,val.getNumero());
@@ -203,13 +292,26 @@ int Calculadora::calcular(Pila *p){
 	}
 	if(! pilaOriginal->pilavacia() ){
 	  calcular(p);
-  }else{
+  	}else{
 		return p->tope()->getNumero();
-  }
-  return p->tope()->getNumero();
+  	}
+  	return p->tope()->getNumero();
+	  	
+
+  	
+	  
 }
 
-void Calculadora::calcular(Pila *p){
+void Calculadora::tryCalcular(Pila *p){
+	if(ok!=0){
+		cout << "Resultado: " << calcular(p);	
+	}
+	else{
+		cout << "Error en la cadena";
+	}
+}
+
+void Calculadora::operar(Pila *p, int a){
 	int x;
 	if(p->pilavacia()){
 		x = a;
@@ -250,40 +352,7 @@ int main(){
   string cad;
   cin >> cad;
   
-  Pila *p = new Pila();
-  Token *x;
-  for (int i = 0 ; i < cad.length() ; i++){
-    if(cad.at(i) == '0')
-    	x = new Token(0);
-    else if(cad.at(i) == '1')
-    	x = new Token(1);
-    else if(cad.at(i) == '2')
-    	x = new Token(2);
-    else if(cad.at(i) == '3')
-    	x = new Token(3);
-    else if(cad.at(i) == '4')
-    	x = new Token(4);
-    else if(cad.at(i) == '5')
-    	x = new Token(5);
-    else if(cad.at(i) == '6')
-    	x = new Token(6);
-    else if(cad.at(i) == '7')
-    	x = new Token(7);
-    else if(cad.at(i) == '8')
-    	x = new Token(8);
-    else if(cad.at(i) == '9')
-    	x = new Token(9);
-    else
-    	x = new Token(cad.at(i));
-    p->apilar(x);
-  }
-  
-  Pila *n = new Pila();
-  while(!p->pilavacia()){
-    n->apilar(p->tope());
-    p->desapilar();
-  }
-  Calculadora *c = new Calculadora(n);
-  cout << "Resultado: " << c->calcular(new Pila());
-}
+  Calculadora *c = new Calculadora(cad);
+  c->tryCalcular(new Pila());
+};
 
