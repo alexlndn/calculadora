@@ -139,11 +139,9 @@ class Calculadora{
   */
 
 bool Calculadora::isnum(char valor){ //Comprueba si el char enviado es un numero o no, utilizando los metodos de "cctype".
-		if(!isalpha(valor)) //Comprueba si no es una letra.
-			if(isalnum(valor)) //Si no es una letra, comprueba si es alfanumerico.
-				return true;	//Si no es una letra y es alfanumerico, entonces es un numero y retorna true.
-				
-		return false; //Caso contrario retorna false.
+	if(!isalpha(valor) && isalnum(valor)) //Comprueba si no es una letra y si es un caracter alfanumerico
+		return true;	//Si no es una letra y es alfanumerico, entonces es un numero y retorna true.
+	return false; //Caso contrario retorna false.
 };
 
 
@@ -170,8 +168,8 @@ bool Calculadora::parentesis(string cad){
 		else if(cad.at(i)==')')			//Si es un parentesis cerrado comprueba si la pila esta vacia. Si es el caso entonces "correcto" igual false ya que no habia un parentesis abierto antes.
 			if(parentesis->pilavacia())
 				correcto = false;
-			else
-				parentesis->desapilar();// Si la pila no es vacia entonces desapila.
+		else
+			parentesis->desapilar();// Si la pila no es vacia entonces desapila.
 	}
 	if(!parentesis->pilavacia())		//Si la pila no es vacia significa que quedo un parentesis sin cerrar y por ende la expresion estaba mal y retorna false.
 		correcto = false;
@@ -196,29 +194,29 @@ bool Calculadora::logica(string cad){
 		if(cad.at(i)=='(')
 			if(valor != "signo" && valor != "(")
 				correcto = false;
-				else
-					valor = "(";
+			else
+				valor = "(";
 		else if(cad.at(i)==')')
-				if(valor != "num" && valor != ")")
-					correcto = false;
-					else
-						valor = ")";
-				else if(cad.at(i)=='*' || cad.at(i)=='/')
-						if(valor!= "num" && valor!= ")")
-							correcto = false;
-							else
-								valor = "signo";
-					else if(cad.at(i)=='-' || cad.at(i)=='+')
-							if(valor!= "num" && valor!= ")" && valor!= "(")
-								correcto = false;
-								else
-									valor = "signo";
-							else if(isnum(cad.at(i)))
-								if(valor == ")")
-									correcto = false;
-									else
-										valor = "num";
-								else correcto = false;
+			if(valor != "num" && valor != ")")
+				correcto = false;
+			else
+				valor = ")";
+		else if(cad.at(i)=='*' || cad.at(i)=='/')
+			if(valor!= "num" && valor!= ")")
+				correcto = false;
+			else
+				valor = "signo";
+		else if(cad.at(i)=='-' || cad.at(i)=='+')
+			if(valor!= "num" && valor!= ")" && valor!= "(")
+				correcto = false;
+			else
+				valor = "signo";
+		else if(isnum(cad.at(i)))
+			if(valor == ")")
+				correcto = false;
+			else
+				valor = "num";
+		else correcto = false;
 	}
 	
 	if(isnum(cad.at(cad.length() -1))) //Envia a isnum() para comprobar si es numero el ultimo valor. Si es verdadero retorna "correcto", que sera false o true dependiendo de que sucedio en el ciclo for.
@@ -307,10 +305,6 @@ void Calculadora::operar(Pila *p, int a){
 	int x;
 	if(p->pilavacia()){
 		x = a;
-	}else if(p->tope()->getType()=="number"){
-		x=p->tope()->getNumero()*10 + a;
-		p->desapilar(); //desapilo el numero y llamo a la funcion de nuevo con el nuevo numero
-		operar(p,x);
 	}else{
 		// si tiene un signo en el tope (lo que necesariamente no significa que haya otro numero antes que el signo)
 		// hay que ver si hay otro numero para hacer las operaciones, si no hay otro numero es porque es un signo menos
@@ -342,8 +336,8 @@ void Calculadora::operar(Pila *p, int a){
 
 int main(){
   string cad;
+  cout << "Ingrese la cadena a resolver sin espacios: ";
   cin >> cad;
-  
   Calculadora *c = new Calculadora(cad);
   c->tryCalcular(new Pila());
 };
