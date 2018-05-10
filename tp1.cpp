@@ -222,8 +222,8 @@ bool Calculadora::logica(string cad){
 	
 	if(isnum(cad.at(cad.length() -1))) //Envia a isnum() para comprobar si es numero el ultimo valor. Si es verdadero retorna "correcto", que sera false o true dependiendo de que sucedio en el ciclo for.
 		return correcto;	
-	else if(cad.at(cad.length() -1) ==')') //Caso contrario comprueba si el ultimo valor es parentesis cerrado. Si es verdadero retorna "correcto", que sera false o true dependiendo de que sucedio en el ciclo for.
-			return correcto;
+	else if(cad.at(cad.length() -1) ==')' && valor!="signo") //Caso contrario comprueba si el ultimo valor es parentesis cerrado. Si es verdadero retorna "correcto", que sera false o true dependiendo de que sucedio en el ciclo for.
+		return correcto;
 	
 	correcto = false;						//Si ultimo el valor no es numero ni parentesis cerrado, entonces esta mal y cambia el valor de "correcto" a false y lo retorna.
 	return correcto;						
