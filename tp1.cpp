@@ -128,7 +128,7 @@ class Calculadora{
 		void operar(Pila *p, int a);
 		
 	public:
-		Calculadora(string cad){ cout << "Cadena recibida por calculadora: " << cad ; ok = analizar(cad); };
+		Calculadora(string cad){ ok = analizar(cad); };
 		int calcular(Pila *p);
 		void tryCalcular(Pila *p);
 };
@@ -357,11 +357,11 @@ int main(){
 		fInput.open(archivo.c_str());
 		if(fInput.fail()){
 			cout << "\nOcurrio un error al intentar abrir el archivo " << archivo << endl;
+			return 0;
 		}else{
 			getline(fInput,cad);
 		}
 	}
-	cout << cad;
   Calculadora *c = new Calculadora(cad);
   c->tryCalcular(new Pila());
   system("PAUSE");
