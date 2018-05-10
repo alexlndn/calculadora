@@ -186,10 +186,10 @@ bool Calculadora::logica(string cad){
 		valor = "num";
 	else if(cad.at(0)=='(' && cad.length() > 2) //Caso contrario comprueba si el primer valor es parentesis abierto.
 			valor = "(";
-		else{						//Si el primer valor no es parentesis abierto ni numero entonces la exprecion esta mal y cambia el valor de "correcto" a false y lo retorna.
-			correcto = false;	
-			return correcto;	 
-		}
+	else{						//Si el primer valor no es parentesis abierto ni numero entonces la exprecion esta mal y cambia el valor de "correcto" a false y lo retorna.
+		correcto = false;	
+		return correcto;	 
+	}
 	//Comprueba los demas valores (desde el segundo hasta el anteultimo). Si detecta un error, cambia el valor de la variable "correcto" a "false" y no vuelve a entrar al ciclo.
 	for(int i = 1 ; i < (cad.length() -1) && correcto ; i++){
 		if(cad.at(i)=='(')
@@ -237,7 +237,6 @@ bool Calculadora::analizar(string cad){
 	bool cond;
 	
 	if(logica(cad) && parentesis(cad)){         //Comprueba que la cadena ingresada sea utilizable
-	
 		for(int i = 0 ; i < cad.length() ; i++){
 			if(isnum(cad.at(i)))
 				if(p->pilavacia()){				//Si es un numero y la pila es vacia, entonces lo agrega directo, haciendo la conversion de char a int (char de interes - char '0').
@@ -360,10 +359,12 @@ int main(){
 			return 0;
 		}else{
 			getline(fInput,cad);
+			fInput.close();
 		}
 	}
   Calculadora *c = new Calculadora(cad);
   c->tryCalcular(new Pila());
+  free(c);
   system("PAUSE");
 };
 
