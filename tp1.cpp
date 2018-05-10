@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <cctype>
+#include <fstream>
 
 //comentar que como es una lista de string, tengo que redefinir el nodo
 //resaltar que solo se cambia la parte int de la lista anterior por string
@@ -127,7 +128,7 @@ class Calculadora{
 		void operar(Pila *p, int a);
 		
 	public:
-		Calculadora(string cad){ ok = analizar(cad); };
+		Calculadora(string cad){ cout << "Cadena recibida por calculadora: " << cad ; ok = analizar(cad); };
 		int calcular(Pila *p);
 		void tryCalcular(Pila *p);
 };
@@ -201,7 +202,7 @@ bool Calculadora::logica(string cad){
 				correcto = false;
 			else
 				valor = ")";
-		else if(cad.at(i)=='*' || cad.at(i)=='/')
+		else if(cad.at(i)=='*' || cad.at(i)=='/' || cad.at(i)=='+')
 			if(valor!= "num" && valor!= ")")
 				correcto = false;
 			else
@@ -338,8 +339,29 @@ void Calculadora::operar(Pila *p, int a){
 
 int main(){
   string cad;
-  cout << "Ingrese la cadena a resolver sin espacios: ";
-  cin >> cad;
+  ifstream fInput;
+  int opcion;
+  cout << "Seleccione una opcion\n1: Ingresar cadena por teclado\n2: Leer fichero de texto\nOpcion ";
+  do{
+  	cin >> opcion;
+	}while(opcion < 1 || opcion > 2);
+	
+	if(opcion == 1){
+		cout << "Ingrese la cadena a resolver sin espacios: ";
+  	cin >> cad;
+	}else{
+		string archivo;
+		cout << "Ingrese el nombre del archivo a leer (debe estar en la misma carpeta que el programa): ";
+		cin >> archivo;
+		archivo += ".txt";
+		fInput.open(archivo.c_str());
+		if(fInput.fail()){
+			cout << "\nOcurrio un error al intentar abrir el archivo " << archivo << endl;
+		}else{
+			getline(fInput,cad);
+		}
+	}
+	cout << cad;
   Calculadora *c = new Calculadora(cad);
   c->tryCalcular(new Pila());
   system("PAUSE");
