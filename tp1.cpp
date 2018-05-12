@@ -340,31 +340,37 @@ int main(){
   string cad;
   ifstream fInput;
   int opcion;
-  cout << "Seleccione una opcion\n1: Ingresar cadena por teclado\n2: Leer fichero de texto\nOpcion ";
-  do{
-  	cin >> opcion;
-	}while(opcion < 1 || opcion > 2);
-	
-	if(opcion == 1){
-		cout << "Ingrese la cadena a resolver sin espacios: ";
-  	cin >> cad;
-	}else{
-		string archivo;
-		cout << "Ingrese el nombre del archivo a leer (debe estar en la misma carpeta que el programa): ";
-		cin >> archivo;
-		archivo += ".txt";
-		fInput.open(archivo.c_str());
-		if(fInput.fail()){
-			cout << "\nOcurrio un error al intentar abrir el archivo " << archivo << endl;
-			return 0;
+  char continuar = 's';
+  
+  while (continuar != 'n'){
+  	cout << "Seleccione una opcion\n1: Ingresar cadena por teclado\n2: Leer fichero de texto\nOpcion ";
+	  do{
+	  	cin >> opcion;
+		}while(opcion < 1 || opcion > 2);
+		
+		if(opcion == 1){
+			cout << "Ingrese la cadena a resolver sin espacios: ";
+	  	cin >> cad;
 		}else{
-			getline(fInput,cad);
-			fInput.close();
+			string archivo;
+			cout << "Ingrese el nombre del archivo a leer (debe estar en la misma carpeta que el programa): ";
+			cin >> archivo;
+			archivo += ".txt";
+			fInput.open(archivo.c_str());
+			if(fInput.fail()){
+				cout << "\nOcurrio un error al intentar abrir el archivo " << archivo << endl;
+				return 0;
+			}else{
+				getline(fInput,cad);
+				fInput.close();
+			}
 		}
-	}
-  Calculadora *c = new Calculadora(cad);
-  c->tryCalcular(new Pila());
-  free(c);
+	  Calculadora *c = new Calculadora(cad);
+	  c->tryCalcular(new Pila());
+	  free(c);
+	  cout << "Continuar calculando? presione 'n' para cancelar...\n\n";
+	  cin >> continuar;
+  }
   system("PAUSE");
 };
 
